@@ -1,20 +1,18 @@
-const express = require('express');
-const sequelize = require('./config/connection');
-const routes = require('./controllers');
-const app = express();
-const PORT = process.env.PORT || 3001;
+// const express = require('express');
+// const sequelize = require('./config/connection');
+// const routes = require('./controllers');
+// const app = express();
+// const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
-app.use(routes);
+// app.use(routes);
 
-// Sync the database and start the server
-sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-});
-
-
+// // Sync the database and start the server
+// sequelize.sync({ force: false }).then(() => {
+//   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// });
 
 
 
@@ -22,7 +20,9 @@ sequelize.sync({ force: false }).then(() => {
 
 
 
-/*const path = require('path');
+
+
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
@@ -67,4 +67,4 @@ app.use(routes);
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
-}); */
+}); 

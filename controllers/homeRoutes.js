@@ -1,78 +1,84 @@
 const router = require('express').Router();
-const { Project, User } = require('../models');
+const { Review, User } = require('../models');
 const withAuth = require('../utils/auth');
 
-// Route for getting the homepage
 router.get('/', async (req, res) => {
+  console.log ("test");
   try {
-    // Fetch all projects and include associated user data
-    const projectData = await Project.findAll({
-      include: [{ model: User, attributes: ['name'] }],
+    // Get all projects and JOIN with user data
+    const reviewData = await Review.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['name'],
+        },
+      ],
     });
 
-    // Serialize data for the template
-    const projects = projectData.map((project) => project.get({ plain: true }));
+    // Serialize data so the template can read it
+    const review = reviewData.map((review) => review.get({ plain: true }));
 
-    // Render the homepage with projects and login status
+    // Pass serialized data and session flag into template
     res.render('homepage', { 
-      projects, 
+      review, 
       logged_in: req.session.logged_in 
     });
   } catch (err) {
-    res.status(500).json(err); // Send error response if query fails
+    console.log (err);
+    
+    res.status(500).json(err);
   }
 });
 
-// Route for getting a specific project by ID
-router.get('/project/:id', async (req, res) => {
+router.get('/review/:id', async (req, res) => {
   try {
-    // Fetch project by ID and include user data
-    const projectData = await Project.findByPk(req.params.id, {
-      include: [{ model: User, attributes: ['name'] }],
+    const reviewData = await Review.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          attributes: ['name'],
+        },
+      ],
     });
 
-    const project = projectData.get({ plain: true });
+    const review = reviewData.get({ plain: true });
 
-    // Render the project page with the data
-    res.render('project', {
-      ...project,
+    res.render('review', {
+      ...review,
       logged_in: req.session.logged_in
     });
   } catch (err) {
-    res.status(500).json(err); // Send error response if query fails
+    res.status(500).json(err);
   }
 });
 
-// Route for getting the profile page (requires authentication)
+// Use withAuth middleware to prevent access to route
 router.get('/profile', withAuth, async (req, res) => {
   try {
-    // Fetch the logged-in user's data based on session ID
+    // Find the logged in user based on the session ID
     const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ['password'] }, // Exclude sensitive data
-      include: [{ model: Project }],
+      attributes: { exclude: ['password'] },
+      include: [{ model: Review }],
     });
 
     const user = userData.get({ plain: true });
 
-    // Render the profile page with user data
     res.render('profile', {
       ...user,
       logged_in: true
     });
   } catch (err) {
-    res.status(500).json(err); // Send error response if query fails
+    res.status(500).json(err);
   }
 });
 
-// Route for the login page
 router.get('/login', (req, res) => {
-  // If user is already logged in, redirect to profile
+  // If the user is already logged in, redirect the request to another route
   if (req.session.logged_in) {
     res.redirect('/profile');
     return;
   }
 
-  // Render the login page
   res.render('login');
 });
 
