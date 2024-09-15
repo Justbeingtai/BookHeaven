@@ -1,26 +1,25 @@
 const router = require('express').Router();
-const { Review, User } = require('../models');
+const { Review, User, Books } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   console.log ("test");
   try {
     // Get all projects and JOIN with user data
-    const reviewData = await Review.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
+    // .findAll() means get all rows 
+    // but if you put conditions into it, you can narrow what you want
+    const reviewData = await Review.findAll();
+    const booksData = await Books.findAll();
+    console.log('reviewData: ', reviewData)
 
     // Serialize data so the template can read it
-    const review = reviewData.map((review) => review.get({ plain: true }));
-
+    const reviews = reviewData.map((review) => review.get({ plain: true }));
+    console.log('reviews ', reviews)
+    const books = booksData.map((books) => books.get({ plain: true }));
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      review, 
+      reviews, 
+      books,
       logged_in: req.session.logged_in 
     });
   } catch (err) {

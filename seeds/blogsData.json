@@ -1,0 +1,17 @@
+[
+    {
+      "title": "Hello",
+      "content": "Goodbye",
+      "user_id": 1
+    },
+    {
+        "title": "Hello",
+        "content": "Goodbye",
+        "user_id": 1
+      },
+      {
+        "title": "Hello",
+        "content": "Goodbye",
+        "user_id": 1
+      }
+  ]

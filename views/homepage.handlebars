@@ -1,11 +1,24 @@
 <!-- Loop over each object in the projects array -->
-{{#each projects as |project| }}
-<div class="row mb-4 project">
+{{#each books as |book| }}
+{{book.title}}
+{{/each}}
+
+{{#each reviews as |review| }}
+<div class="row mb-4 review">
+  {{review.id}} 
   <div class="col-md-5">
+    <h1>The comment</h1>
+    <p>{{review.comment}}</p>
+
+    <h2>Rating</h2>
+    <p>{{review.rating}}</p>
+  </div>
+
+  {{!-- <div class="col-md-5">
     <h2>
       <!-- Call helper function with triple brackets to render the emoji span as HTML -->
       {{{get_emoji}}}
-      <a href="/project/{{project.id}}">{{project.name}}</a>
+      <a href="/review/{{review.id}}">{{project.name}}</a>
     </h2>
     <p>
       <span for="img" aria-label="money">💲</span>
@@ -19,6 +32,6 @@
     <p>
       {{project.description}}
     </p>
-  </div>
+  </div> --}}
 </div>
 {{/each}}

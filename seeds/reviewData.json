@@ -1,0 +1,15 @@
+[
+    {
+      "rating": 1,
+      "comment": "Two"
+    },
+    {
+        "rating": 3,
+        "comment": "Four"
+      },
+      {
+        "rating": 5,
+        "comment": "Six"
+      }
+  ]
+  
