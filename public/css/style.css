@@ -1,6 +1,8 @@
-header, .project:not(:last-child) {
+header,
+.project:not(:last-child) {
   border-bottom: 1px solid #ccc;
 }
+
 header {
   display: flex;
   flex-direction: column;
@@ -43,6 +45,40 @@ header {
   padding: 0;
 }
 
+.welcome-banner {
+  margin-bottom: 3.5rem;
+}
+.welcome-banner .user-name {
+  text-transform: capitalize;
+}
+
+.blog-group {
+  padding-bottom: 3.5rem;
+  border-bottom: 1px dashed #aaa;
+}
+.blog-group .alert.hide,
+.books-group .alert.hide,
+.login-group .alert.hide,
+.signup-group .alert.hide {
+  display: none;
+}
+
+.entry-list .entry {
+  border-radius: 0.25rem;
+  border: 1px solid #dee2e6;
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+}
+.entry-list .entry h4 {
+  margin-bottom: 0;
+}
+.entry-list .entry h4 a {
+  text-decoration: none;
+}
+.entry-list .entry .col-md-4 {
+  text-align: right;
+}
 @media screen and (min-width: 360px) {
   .card {
     margin-bottom: 2rem;

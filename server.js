@@ -14,14 +14,6 @@
 //   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // });
 
-
-
-
-
-
-
-
-
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
@@ -39,7 +31,7 @@ const PORT = process.env.PORT || 3001;
 const hbs = exphbs.create({ helpers });
 
 const sess = {
-  secret: 'Super secret secret',
+  secret: process.env.SESSION_SECRET || 'Super secret secret',
   cookie: {
     maxAge: 300000,
     httpOnly: true,
@@ -49,8 +41,8 @@ const sess = {
   resave: false,
   saveUninitialized: true,
   store: new SequelizeStore({
-    db: sequelize
-  })
+    db: sequelize,
+  }),
 };
 
 app.use(session(sess));
@@ -68,4 +60,4 @@ app.use(routes);
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log('Now listening'));
   console.log(`Server running at http://localhost:${PORT}`);
-}); 
+});

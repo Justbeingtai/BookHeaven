@@ -17,7 +17,7 @@ const loginFormHandler = async (event) => {
       // If successful, redirect the browser to the profile page
       document.location.replace('/profile');
     } else {
-      alert(response.statusText);
+      document.querySelector('.login-group .alert').classList.remove('hide');
     }
   }
 };
@@ -39,7 +39,7 @@ const signupFormHandler = async (event) => {
     if (response.ok) {
       document.location.replace('/profile');
     } else {
-      alert(response.statusText);
+      document.querySelector('.signup-group .alert').classList.remove('hide');
     }
   }
 };

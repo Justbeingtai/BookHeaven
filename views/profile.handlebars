@@ -1,94 +1,126 @@
-<div class="row">
-  <div class="col-auto">
-    <h2>Welcome, {{user.name}}!</h2>
+<div class='row welcome-banner mb-5'>
+  <div class='col-auto'>
+    <h1>Welcome, <span class='user-name'>{{user.name}}!</span></h1>
   </div>
 </div>
 
-<div class="row mt-4">
-  <div class="col-md-6">
+<div class='row blog-group'>
+  <div class='col-12 alert alert-danger hide' role='alert'>
+    Failed to create a blog!
+  </div>
+
+  <div class='col-md-6 pe-4'>
     <h3>Create a New Blog:</h3>
 
-    <form class="form new-project-form">
-      <div class="form-group">
-        <label for="project-name">project name:</label>
-        <input class="form-input" type="text" id="project-name" name="project-name" />
+    <form id='new-blog-form'>
+      <div class='form-group mb-2'>
+        <label for='blog-title'>Title:</label>
+        <input type='text' class='form-control' id='blog-title' />
       </div>
-      <div class="form-group">
-        <label for="project-funding">needed funding ($):</label>
-        <input class="form-input" type="number" id="project-funding" name="project-funding" />
+      <div class='form-group mb-2'>
+        <label for='book-rating'>Rating:</label>
+        <select class='form-control' id='blog-rating'>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
       </div>
-      <div class="form-group">
-        <label for="project-desc">description:</label>
-        <textarea class="form-input" id="project-desc" name="project-desc"></textarea>
+      <div class='form-group mb-2'>
+        <label for='blog-content'>Content:</label>
+        <textarea class='form-control' id='blog-content' rows='5'></textarea>
       </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create Blog</button>
+      <input type='hidden' id='hidden-user' value='{{user.id}}' />
+      <div class='form-group buttons mt-2'>
+        <button type='submit' class='btn btn-primary'>Create Blog</button>
       </div>
     </form>
   </div>
 
-  {{#if blogs.length}}
-  <div class="col-md-6 project-list">
+  <div class='col-md-6 ps-4 entry-list blogs'>
     <h3>Current Blogs:</h3>
-
-    {{#each blogs as |book|}}
-    <div class="row mb-2">
-      <div class="col-md-8">
-        <h4><a href="/api/book/{{book.id}}">{{book.title}}</a></h4>
-      </div>
-      <div class="col-md-4">
-        <button class="btn btn-sm btn-danger" data-id="{{book.id}}">DELETE</button>
-      </div>
-    </div>
-    {{/each}}
+    {{#if blogs.length}}
+      {{#each blogs as |blog|}}
+        <div class='row mb-2 entry'>
+          <div class='col-md-8'>
+            <h4><a href='/api/blogs/{{blog.id}}'>{{blog.title}}</a></h4>
+          </div>
+          <div class='col-md-4'>
+            <button
+              class='btn btn-sm btn-danger'
+              data-id='{{blog.id}}'
+            >DELETE</button>
+          </div>
+        </div>
+      {{/each}}
+    {{else}}
+      <h6>You have no blog entries!</h6>
+    {{/if}}
   </div>
-  {{/if}}
- 
+
 </div>
 
-<div class="row mt-4">
-  <div class="col-md-6">
+<div class='row mt-5 mb-5 books-group'>
+  <div class='col-12 alert alert-danger hide' role='alert'>
+    Failed to create a blog!
+  </div>
+  <div class='col-md-6 pe-4'>
     <h3>Add a New Book:</h3>
 
-    <form class="form new-project-form">
-      <div class="form-group">
-        <label for="project-name">Title:</label>
-        <input class="form-input" type="text" id="project-name" name="project-name" />
+    <form id='new-book-form'>
+      <div class='form-group mb-2'>
+        <label for='book-title'>Title:</label>
+        <input type='text' class='form-control' id='book-title' />
       </div>
-      <div class="form-group">
-        <label for="project-name">Author:</label>
-        <input class="form-input" type="text" id="project-name" name="project-name" />
+      <div class='form-group mb-2'>
+        <label for='book-author'>Author:</label>
+        <input type='text' class='form-control' id='book-author' />
       </div>
-      <div class="form-group">
-        <label for="project-name">Genre</label>
-        <input class="form-input" type="text" id="project-name" name="project-name" />
+      <div class='form-group mb-2'>
+        <label for='book-genre'>Genre:</label>
+        <input
+          type='text'
+          class='form-control'
+          id='book-genre'
+          placeholder='Fantasy, Fiction, Sci-Fi...'
+        />
       </div>
-      <div class="form-group">
-        <label for="project-name">Decription</label>
-        <textarea class="form-input" id="project-desc" name="project-desc"></textarea>
+      <div class='form-group mb-2'>
+        <label for='book-description'>Description:</label>
+        <textarea
+          class='form-control'
+          id='book-description'
+          rows='5'
+        ></textarea>
       </div>
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create Book</button>
+      <div class='form-group'>
+        <button type='submit' class='btn btn-primary'>Add Book</button>
       </div>
     </form>
   </div>
 
-  {{#if books.length}}
-  <div class="col-md-6 project-list">
+  <div class='col-md-6 ps-4 entry-list books'>
     <h3>Current Books:</h3>
+    {{#if books.length}}
 
-    {{#each books as |book|}}
-    <div class="row mb-2">
-      <div class="col-md-8">
-        <h4><a href="/api/books/{{book.id}}">{{book.title}}</a></h4>
-      </div>
-      <div class="col-md-4">
-        <button class="btn btn-sm btn-danger" data-id="{{book.id}}">DELETE</button>
-      </div>
-    </div>
-    {{/each}}
+      {{#each books as |book|}}
+        <div class='row mb-2 entry'>
+          <div class='col-md-8'>
+            <h4><a href='/api/books/{{book.id}}'>{{book.title}}</a></h4>
+          </div>
+          <div class='col-md-4'>
+            <button
+              class='btn btn-sm btn-danger'
+              data-id='{{book.id}}'
+            >DELETE</button>
+          </div>
+        </div>
+      {{/each}}
+    {{else}}
+      <h6>You have no books!</h6>
+    {{/if}}
   </div>
-  {{/if}}
 </div>
 
-<script src="./js/profile.js"></script>
+<script src='./js/profile.js'></script>

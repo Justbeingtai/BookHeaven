@@ -4,12 +4,13 @@ const { Blogs, User } = require('../../models');
 
 // Route to create a new blog post
 router.post('/', async (req, res) => {
-  console.log(req.body); // Log the request body
+  console.log('receiving request body: ', req.body); // Log the request body
   try {
     const newBlog = await Blogs.create({
       title: req.body.title,
       content: req.body.content,
-      user_id: 1, // Hardcode the user_id to 1 for now
+      // maybe add ratings here?
+      user_id: req.body.userId,
     });
     res.status(201).json(newBlog);
   } catch (err) {
