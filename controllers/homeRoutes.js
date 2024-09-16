@@ -1,26 +1,48 @@
 const router = require('express').Router();
-const { Review, User } = require('../models');
+const { Review, User, Books, Blogs } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
   console.log ("test");
   try {
-    // Get all projects and JOIN with user data
+    // .findAll() means get all rows 
+    // but if you put conditions inside that
+    // function, you can narrow what you want
+    // 
     const reviewData = await Review.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
+      // Sort the rows by the rating column
+      // instead of the default id column
+      // and sort by descending order
+      // meaning the largest to smallest.
+      order: [[ 'rating', 'DESC' ]],
+      // Get the top 3 of the list
+      limit: 3
+    });
+    const booksData = await Books.findAll({
+      limit: 3
     });
 
-    // Serialize data so the template can read it
-    const review = reviewData.map((review) => review.get({ plain: true }));
+    const blogsData =  await Blogs.findAll({
+      include: User,
+      limit: 3,
+      order: [['id', 'DESC',  ]]
+    });
 
+    console.log('reviewData: ', reviewData)
+
+    // Serialize data array so the template can read it
+    const reviews = reviewData.map((review) => review.get({ plain: true }));
+    console.log('reviews ', reviews)
+    // Serialize data array so the template can read it
+    const books = booksData.map((books) => books.get({ plain: true }));
+    // Serialize data array so the template can read it
+    const blogs = blogsData.map((blogs) => blogs.get({ plain: true }));
+    console.log('blogs ', blogs)
     // Pass serialized data and session flag into template
     res.render('homepage', { 
-      review, 
+      reviews, 
+      books,
+      blogs,
       logged_in: req.session.logged_in 
     });
   } catch (err) {
@@ -60,12 +82,30 @@ router.get('/profile', withAuth, async (req, res) => {
       attributes: { exclude: ['password'] },
       include: [{ model: Review }],
     });
-
+    // Serialize the data
     const user = userData.get({ plain: true });
 
+    const blogsData = await Blogs.findAll({
+      where: {
+        user_id: user.id
+      }
+    });
+
+    // Serialize the array blogData
+    const blogs = blogsData.map((blog) => blog.get({ plain: true }));
+    console.log('blogs ', blogs);
+
+    const booksData = await Books.findAll();
+
+    // Serialize the array blogData
+    const books = booksData.map((book) => book.get({ plain: true }));
+    console.log('books ', books);
+
     res.render('profile', {
-      ...user,
-      logged_in: true
+      user,
+      blogs,
+      books,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);

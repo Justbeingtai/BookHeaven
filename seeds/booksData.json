@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Hello",
+    "author": "Goodbye",
+    "genre": "...well that's rude",
+    "description": "That was the intention."
+  },
+  {
+    "title": "The Hobbit",
+    "author": "J.R.R Tolkien",
+    "genre": "Fantasy",
+    "description": "About Hobbits"
+  },
+  {
+    "title": "Making it in America",
+    "author": "Rachel Slade",
+    "genre": "Economics",
+    "description": "Making a simple sweatshirt in the U.S.A."
+  },
+  {
+    "title": "NextJS",
+    "author": "Greg Lim",
+    "genre": "Tech",
+    "description": "Learning NextJS 13."
+  }
+]

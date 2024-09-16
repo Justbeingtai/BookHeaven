@@ -1,0 +1,31 @@
+[
+  {
+    "rating": 1,
+    "comment": "Comment 1"
+  },
+  {
+    "rating": 3,
+    "comment": "Stuff"
+  },
+  {
+    "rating": 5,
+    "comment": "Six"
+  },
+  {
+    "rating": 5,
+    "comment": "Another rating"
+  },
+  {
+    "rating": 4,
+    "comment": "Hello"
+  },
+  {
+    "rating": 4,
+    "comment": "Just another 4 stars"
+  },
+  {
+    "rating": 3,
+    "comment": "Jellojam"
+  }
+]
+  

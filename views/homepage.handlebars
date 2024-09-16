@@ -1,24 +1,64 @@
-<!-- Loop over each object in the projects array -->
-{{#each projects as |project| }}
-<div class="row mb-4 project">
-  <div class="col-md-5">
-    <h2>
-      <!-- Call helper function with triple brackets to render the emoji span as HTML -->
-      {{{get_emoji}}}
-      <a href="/project/{{project.id}}">{{project.name}}</a>
-    </h2>
-    <p>
-      <span for="img" aria-label="money">💲</span>
-      <!-- Pass needed_funding value to the helper function -->
-      <span class="dollar-amount">{{format_amount project.needed_funding}}</span>
-      needed!
-    </p>
-    <p>Created by {{project.user.name}} on {{format_date project.date_created}}</p>
+<!-- Loop over each object in the books array -->
+<div class="container px-4">
+
+  <div class="row" style="margin-bottom: 2rem">
+    <h1 class="col-12">Top 3 Reviews</h1>
+    <div class="container">
+      <div class="row">
+      {{#each reviews as |review| }}
+      <div class="col-12 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            Rating: {{review.rating}} / 5
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{ review.comment }}</p>
+            {{!-- <a href="/api/blogs/{{blog.id}}" class="btn btn-primary">Read More</a> --}}
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
   </div>
-  <div class="col-md-7">
-    <p>
-      {{project.description}}
-    </p>
+  
+  <div class="row" style="margin-bottom: 2rem">
+    <h1 class="col-12">Latest Books</h1>
+    <div class="container">
+      <div class="row">
+      {{#each books as |book| }}
+      <div class="col-12 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            {{book.title}}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">By: {{ book.author }}</h5>
+            <p class="card-text">{{ book.description }}</p>
+            <a href="/api/books/{{book.id}}" class="btn btn-primary">See More</a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="row" style="margin-bottom: 2rem">
+    <h1 class="col-12">Recent Blogs</h1>
+    <div class="container">
+      <div class="row">
+      {{#each blogs as |blog| }}
+      <div class="col-12 col-md-4">
+        <div class="card">
+          <div class="card-header">
+            {{blog.title}}
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">By: {{ blog.user.name }}</h5>
+            <a href="/api/blogs/{{blog.id}}" class="btn btn-primary">Read More</a>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
   </div>
 </div>
-{{/each}}
