@@ -1,6 +1,6 @@
 // controllers/api/blogRoutes.js
 const router = require('express').Router();
-const { Blogs, User } = require('../../models'); 
+const { Blogs, User } = require('../../models');
 
 // Route to create a new blog post
 router.post('/', async (req, res) => {
@@ -20,12 +20,12 @@ router.post('/', async (req, res) => {
 });
 // Route to get all blog posts
 router.get('/', async (req, res) => {
-  console.log('here')
+  console.log('here');
   try {
-    const blogsData = await Blogs.findAll({include: User});
+    const blogsData = await Blogs.findAll({ include: User });
     const blogs = blogsData.map((blogs) => blogs.get({ plain: true }));
-    res.render('blogpage', { 
-      blogs, 
+    res.render('blogpage', {
+      blogs,
     });
   } catch (err) {
     res.status(500).json(err);
@@ -34,27 +34,27 @@ router.get('/', async (req, res) => {
 
 // Route to get a single blog post by ID
 router.get('/:id', async (req, res) => {
-  console.log('got here---')
-  console.log("the id is: ", req.params.id)
+  console.log('got here---');
+  console.log('the id is: ', req.params.id);
   try {
     const blogData = await Blogs.findOne({
       where: {
-        id: req.params.id
+        id: req.params.id,
       },
-      include: User
+      include: User,
     });
-    console.log('blogData: ', blogData)
+    console.log('blogData: ', blogData);
     if (!blogData) {
-      console.log('am i here?')
+      console.log('am i here?');
       res.status(404).json({ message: 'No blog post found with this id!' });
       return;
     }
     // Serialize single data (not array) so the template can read it
     const blog = blogData.get({ plain: true });
     console.log('blog: ', blog);
-    console.log(" ");
-    res.render('blogDetails', { 
-      blog, 
+    console.log(' ');
+    res.render('blogDetails', {
+      blog,
     });
   } catch (err) {
     res.status(500).json(err);

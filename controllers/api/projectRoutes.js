@@ -2,22 +2,14 @@ const router = require('express').Router();
 const { Project } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-router.get('/books', (req, res) => {
+router.get('/books', (req, res) => {});
+router.get('/book/', (req, res) => {});
+router.post('/route', (request, response) => {});
+router.post('/boo', (req, res) => {});
+router.delete('/:id', (req, res) => {});
+router.put('/:id', (req, res) => {});
 
-});
-router.get('/book/', (req, res) => {
-
-});
-router.post('/boo'), (req, res) => {
-;
-router.delete()'/:id',(req, res) => {
-  
-};
-router.put()'/:id', (req, res) => {
-  
-};
-
-router.post('/', withAuth, async(req, res) => {
+router.post('/', withAuth, async (req, res) => {
   try {
     const newProject = await Project.create({
       ...req.body,

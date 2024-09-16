@@ -27,6 +27,10 @@ Blogs.init(
         key: 'id',
       },
     },
+    // ratings: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    // }
   },
   {
     sequelize,

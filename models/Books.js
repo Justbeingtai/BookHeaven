@@ -30,10 +30,10 @@ Book.init(
   },
   {
     sequelize,
-    timestamps: true,        // Adds createdAt and updatedAt timestamps
-    freezeTableName: true,   // Prevents table name from being pluralized
-    underscored: true,       // Uses snake_case column names
-    modelName: 'book',       // Sets the table name to 'book'
+    timestamps: true, // Adds createdAt and updatedAt timestamps
+    freezeTableName: true, // Prevents table name from being pluralized
+    underscored: true, // Uses snake_case column names
+    modelName: 'book', // Sets the table name to 'book'
   }
 );
 
