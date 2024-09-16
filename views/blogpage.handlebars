@@ -1,0 +1,10 @@
+<div class="row" style="border: 1px solid black"></div>
+<h1 class="col-12">Blogs</h1>
+{{#each blogs as |blog| }}
+<div class="col-md-5" style="border: 1px solid black">
+  <p><a href="/api/blogs/{{blog.id}}">{{blog.title}}</a></p>
+  <p>The Content:{{blog.content}}</p>
+  <p>The User: {{blog.user.name}}</p>
+</div>
+{{/each}}
+</div>

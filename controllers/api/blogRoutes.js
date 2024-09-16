@@ -1,12 +1,12 @@
 // controllers/api/blogRoutes.js
 const router = require('express').Router();
-const { Blog } = require('../../models'); 
+const { Blogs, User } = require('../../models'); 
 
 // Route to create a new blog post
 router.post('/', async (req, res) => {
   console.log(req.body); // Log the request body
   try {
-    const newBlog = await Blog.create({
+    const newBlog = await Blogs.create({
       title: req.body.title,
       content: req.body.content,
       user_id: 1, // Hardcode the user_id to 1 for now
@@ -19,9 +19,13 @@ router.post('/', async (req, res) => {
 });
 // Route to get all blog posts
 router.get('/', async (req, res) => {
+  console.log('here')
   try {
-    const blogData = await Blog.findAll();
-    res.status(200).json(blogData);
+    const blogsData = await Blogs.findAll({include: User});
+    const blogs = blogsData.map((blogs) => blogs.get({ plain: true }));
+    res.render('blogpage', { 
+      blogs, 
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -29,13 +33,28 @@ router.get('/', async (req, res) => {
 
 // Route to get a single blog post by ID
 router.get('/:id', async (req, res) => {
+  console.log('got here---')
+  console.log("the id is: ", req.params.id)
   try {
-    const blogData = await Blog.findByPk(req.params.id);
+    const blogData = await Blogs.findOne({
+      where: {
+        id: req.params.id
+      },
+      include: User
+    });
+    console.log('blogData: ', blogData)
     if (!blogData) {
+      console.log('am i here?')
       res.status(404).json({ message: 'No blog post found with this id!' });
       return;
     }
-    res.status(200).json(blogData);
+    // Serialize single data (not array) so the template can read it
+    const blog = blogData.get({ plain: true });
+    console.log('blog: ', blog);
+    console.log(" ");
+    res.render('blogDetails', { 
+      blog, 
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -44,7 +63,7 @@ router.get('/:id', async (req, res) => {
 // Route to update a blog post
 router.put('/:id', async (req, res) => {
   try {
-    const updatedBlog = await Blog.update(req.body, {
+    const updatedBlog = await Blogs.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updatedBlog) {
@@ -60,7 +79,7 @@ router.put('/:id', async (req, res) => {
 // Route to delete a blog post
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedBlog = await Blog.destroy({
+    const deletedBlog = await Blogs.destroy({
       where: { id: req.params.id },
     });
     if (!deletedBlog) {

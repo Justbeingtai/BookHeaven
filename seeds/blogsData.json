@@ -1,17 +1,14 @@
 [
-    {
-      "title": "Hello",
-      "content": "Goodbye",
-      "user_id": 1
-    },
-    {
-        "title": "Hello",
-        "content": "Goodbye",
-        "user_id": 1
-      },
-      {
-        "title": "Hello",
-        "content": "Goodbye",
-        "user_id": 1
-      }
-  ]
+  {
+    "title": "Blog Title One",
+    "content": "Hello Goodbye"
+  },
+  {
+    "title": "Stuff",
+    "content": "Chicago Bulls"
+  },
+  {
+    "title": "Michael Jordan",
+    "content": "MVP and the GOAT"
+  }
+]
