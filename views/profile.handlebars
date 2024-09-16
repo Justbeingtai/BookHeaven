@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-auto">
-    <h2>Welcome, {{name}}!</h2>
+    <h2>Welcome, {{user.name}}!</h2>
   </div>
 </div>
 
 <div class="row mt-4">
   <div class="col-md-6">
-    <h3>Create a New Project:</h3>
+    <h3>Create a New Blog:</h3>
 
     <form class="form new-project-form">
       <div class="form-group">
@@ -22,22 +22,68 @@
         <textarea class="form-input" id="project-desc" name="project-desc"></textarea>
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Create Blog</button>
       </div>
     </form>
   </div>
 
-  {{#if projects.length}}
+  {{#if blogs.length}}
   <div class="col-md-6 project-list">
-    <h3>Current Projects:</h3>
+    <h3>Current Blogs:</h3>
 
-    {{#each projects as |project|}}
+    {{#each blogs as |book|}}
     <div class="row mb-2">
       <div class="col-md-8">
-        <h4><a href="/project/{{project.id}}">{{project.name}}</a></h4>
+        <h4><a href="/api/book/{{book.id}}">{{book.title}}</a></h4>
       </div>
       <div class="col-md-4">
-        <button class="btn btn-sm btn-danger" data-id="{{project.id}}">DELETE</button>
+        <button class="btn btn-sm btn-danger" data-id="{{book.id}}">DELETE</button>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+ 
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-6">
+    <h3>Add a New Book:</h3>
+
+    <form class="form new-project-form">
+      <div class="form-group">
+        <label for="project-name">Title:</label>
+        <input class="form-input" type="text" id="project-name" name="project-name" />
+      </div>
+      <div class="form-group">
+        <label for="project-name">Author:</label>
+        <input class="form-input" type="text" id="project-name" name="project-name" />
+      </div>
+      <div class="form-group">
+        <label for="project-name">Genre</label>
+        <input class="form-input" type="text" id="project-name" name="project-name" />
+      </div>
+      <div class="form-group">
+        <label for="project-name">Decription</label>
+        <textarea class="form-input" id="project-desc" name="project-desc"></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create Book</button>
+      </div>
+    </form>
+  </div>
+
+  {{#if books.length}}
+  <div class="col-md-6 project-list">
+    <h3>Current Books:</h3>
+
+    {{#each books as |book|}}
+    <div class="row mb-2">
+      <div class="col-md-8">
+        <h4><a href="/api/books/{{book.id}}">{{book.title}}</a></h4>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-sm btn-danger" data-id="{{book.id}}">DELETE</button>
       </div>
     </div>
     {{/each}}

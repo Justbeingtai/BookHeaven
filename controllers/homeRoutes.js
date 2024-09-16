@@ -82,12 +82,30 @@ router.get('/profile', withAuth, async (req, res) => {
       attributes: { exclude: ['password'] },
       include: [{ model: Review }],
     });
-    // Serialize the userData
+    // Serialize the data
     const user = userData.get({ plain: true });
 
+    const blogsData = await Blogs.findAll({
+      where: {
+        user_id: user.id
+      }
+    });
+
+    // Serialize the array blogData
+    const blogs = blogsData.map((blog) => blog.get({ plain: true }));
+    console.log('blogs ', blogs);
+
+    const booksData = await Books.findAll();
+
+    // Serialize the array blogData
+    const books = booksData.map((book) => book.get({ plain: true }));
+    console.log('books ', books);
+
     res.render('profile', {
-      ...user,
-      logged_in: true
+      user,
+      blogs,
+      books,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
     res.status(500).json(err);
