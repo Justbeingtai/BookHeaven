@@ -1,4 +1,3 @@
-// models/Blogs.js
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -13,24 +12,24 @@ Blogs.init(
     },
     title: {
       type: DataTypes.STRING,
-      allowNull: false, // Title is required
+      allowNull: false,
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false, // Blog content is required
+      allowNull: false,
     },
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'user', // Reference the user model (author of the blog)
+        model: 'user',
         key: 'id',
       },
     },
   },
   {
     sequelize,
-    timestamps: true, // Enable createdAt and updatedAt timestamps
+    timestamps: true,
     freezeTableName: true,
     underscored: true,
     modelName: 'blogs',

@@ -1,23 +1,37 @@
 const router = require('express').Router();
 const { User } = require('../../models'); // Correct import
 
-// Create a new user
+// Route to create a new user (Sign-Up)
 router.post('/', async (req, res) => {
-  console.log(req.body); // Log request body to check incoming data
-  try {
-    const userData = await User.create(req.body);
 
+  try {
+    const userData = await User.create({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    // Save user session after sign-up
     req.session.save(() => {
       req.session.user_id = userData.id;
       req.session.logged_in = true;
 
       res.status(200).json(userData); // Return created user
     });
-  } catch (err) {
-    console.error(err); // Log the error for debugging
-    res.status(400).json(err); // Send 400 Bad Request if validation fails
+} catch (err) {
+    console.log('Error during sign-up:', err); // Log the error
+
+    // Handle duplicate email error
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      res.status(400).json({ message: 'Email is already in use. Please try a different email.' });
+    } else if (err.name === 'SequelizeValidationError') {
+      res.status(400).json({ message: 'Password must be at least 8 characters long.' });
+    } else {
+      res.status(500).json({ message: 'An unexpected error occurred during sign-up.' });
+    }
   }
 });
+
 
 // User login
 router.post('/login', async (req, res) => {

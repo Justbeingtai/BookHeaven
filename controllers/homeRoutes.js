@@ -1,85 +1,130 @@
 const router = require('express').Router();
+const axios = require('axios');
 const { Review, User } = require('../models');
-const withAuth = require('../utils/auth');
+const { Op } = require('sequelize');
+require('dotenv').config(); // Load .env variables
 
+// Homepage route to display top 3 books and their reviews
 router.get('/', async (req, res) => {
-  console.log ("test");
+  
   try {
-    // Get all projects and JOIN with user data
-    const reviewData = await Review.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
+    // Fetch top 3 books from Google Books API (e.g., trending books)
+    const googleBooksResponse = await axios.get('https://www.googleapis.com/books/v1/volumes', {
+      params: {
+        q: 'top', // Adjust this query to fetch popular books
+        key: process.env.GOOGLE_BOOKS_API_KEY,
+        maxResults: 3 // Limit to top 3
+      }
     });
 
-    // Serialize data so the template can read it
-    const review = reviewData.map((review) => review.get({ plain: true }));
+    const googleBooks = googleBooksResponse.data.items;
 
-    // Pass serialized data and session flag into template
-    res.render('homepage', { 
-      review, 
-      logged_in: req.session.logged_in 
+    // For each book, fetch reviews from your local database
+    const reviewsForBooks = {};
+    for (const book of googleBooks) {
+      const title = book.volumeInfo.title;
+
+      const reviewResults = await Review.findAll({
+        where: {
+          comment: {
+            [Op.iLike]: `%${title}%` // Match review comments with book titles
+          },
+        },
+        include: {
+          model: User,
+          attributes: ['name']
+        }
+      });
+
+      reviewsForBooks[title] = reviewResults.map((review) => review.get({ plain: true }));
+    }
+
+    const logged_in = req.session ? req.session.logged_in : false;
+
+    // Render the homepage with top books and their reviews
+    res.render('homepage', {
+      googleBooks,
+      reviewsForBooks,
+      logged_in
     });
   } catch (err) {
-    console.log (err);
-    
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ error: 'Error fetching top books and reviews' });
   }
 });
 
-router.get('/review/:id', async (req, res) => {
+// Add route for login page
+router.get('/login', (req, res) => {
   try {
-    const reviewData = await Review.findByPk(req.params.id, {
-      include: [
-        {
-          model: User,
-          attributes: ['name'],
-        },
-      ],
-    });
-
-    const review = reviewData.get({ plain: true });
-
-    res.render('review', {
-      ...review,
-      logged_in: req.session.logged_in
+    // Render the login page
+    res.render('login', {
+      title: 'Login',
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ error: 'Error loading login page' });
   }
 });
 
-// Use withAuth middleware to prevent access to route
-router.get('/profile', withAuth, async (req, res) => {
+// Add route for signup page
+router.get('/signup', (req, res) => {
   try {
-    // Find the logged in user based on the session ID
+    // Render the signup page
+    res.render('signup', {
+      title: 'Sign Up',
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error loading signup page' });
+  }
+});
+
+// Add route for profile page
+router.get('/profile', async (req, res) => {
+  try {
+    // Check if the user is logged in
+    if (!req.session.logged_in) {
+      return res.redirect('/login'); // Redirect to login if not logged in
+    }
+
+    // Fetch user data from the database (or pass the session data if already available)
     const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ['password'] },
-      include: [{ model: Review }],
+      attributes: { exclude: ['password'] }, // Exclude password from response
     });
 
     const user = userData.get({ plain: true });
 
+    // Render the profile page with the user data
     res.render('profile', {
-      ...user,
-      logged_in: true
+      title: 'Your Profile',
+      user,
+      logged_in: req.session.logged_in,
     });
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ error: 'Error loading profile page' });
   }
 });
 
-router.get('/login', (req, res) => {
-  // If the user is already logged in, redirect the request to another route
-  if (req.session.logged_in) {
-    res.redirect('/profile');
-    return;
-  }
+// Add route for chat page
+router.get('/chat', (req, res) => {
+  try {
+    // Check if the user is logged in
+    if (!req.session.logged_in) {
+      return res.redirect('/login'); // Redirect to login if not logged in
+    }
 
-  res.render('login');
+    // Render the chat page
+    res.render('chat', {
+      title: 'Chat Room',
+      logged_in: req.session.logged_in,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error loading chat page' });
+  }
 });
 
 module.exports = router;

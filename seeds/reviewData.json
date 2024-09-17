@@ -1,0 +1,14 @@
+[
+  {
+    "rating": 5,
+    "comment": "This is an amazing book!"
+  },
+  {
+    "rating": 4,
+    "comment": "Really enjoyed this book!"
+  },
+  {
+    "rating": 3,
+    "comment": "It was an okay read."
+  }
+]

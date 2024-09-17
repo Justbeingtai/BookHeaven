@@ -1,15 +1,14 @@
 // controllers/api/blogRoutes.js
 const router = require('express').Router();
-const { Blog } = require('../../models'); 
+const { Blogs, User } = require('../../models');
 
 // Route to create a new blog post
 router.post('/', async (req, res) => {
-  console.log(req.body); // Log the request body
   try {
-    const newBlog = await Blog.create({
+    const newBlog = await Blogs.create({
       title: req.body.title,
       content: req.body.content,
-      user_id: 1, // Hardcode the user_id to 1 for now
+      user_id: req.session.user_id, // Use the logged-in user's ID
     });
     res.status(201).json(newBlog);
   } catch (err) {
@@ -17,26 +16,51 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: 'Failed to create blog post', error: err });
   }
 });
+
 // Route to get all blog posts
 router.get('/', async (req, res) => {
   try {
-    const blogData = await Blog.findAll();
-    res.status(200).json(blogData);
+    const blogData = await Blogs.findAll({
+      include: {
+        model: User,
+        attributes: ['name'],
+      },
+    });
+
+    const blogs = blogData.map((blog) => blog.get({ plain: true }));
+
+    res.render('blogpage', { 
+      blogs, 
+      logged_in: req.session.logged_in 
+    });
   } catch (err) {
-    res.status(500).json(err);
+    console.error('Error fetching blogs:', err); // Log the full error message
+    res.status(500).json({ error: err.message }); // Return error message in response
   }
 });
 
-// Route to get a single blog post by ID
+// Route to get a single blog post by ID and render the blog details page
 router.get('/:id', async (req, res) => {
   try {
-    const blogData = await Blog.findByPk(req.params.id);
+    const blogData = await Blogs.findByPk(req.params.id, {
+      include: {
+        model: User,
+        attributes: ['name'],
+      },
+    });
+    
     if (!blogData) {
       res.status(404).json({ message: 'No blog post found with this id!' });
       return;
     }
-    res.status(200).json(blogData);
+
+    const blog = blogData.get({ plain: true });
+    res.render('blogdetails', { // Render the blogdetails.handlebars
+      blog,
+      logged_in: req.session.logged_in
+    });
   } catch (err) {
+    console.error('Error fetching single blog:', err); // Log any errors
     res.status(500).json(err);
   }
 });
@@ -44,7 +68,7 @@ router.get('/:id', async (req, res) => {
 // Route to update a blog post
 router.put('/:id', async (req, res) => {
   try {
-    const updatedBlog = await Blog.update(req.body, {
+    const updatedBlog = await Blogs.update(req.body, {
       where: { id: req.params.id },
     });
     if (!updatedBlog) {
@@ -60,7 +84,7 @@ router.put('/:id', async (req, res) => {
 // Route to delete a blog post
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedBlog = await Blog.destroy({
+    const deletedBlog = await Blogs.destroy({
       where: { id: req.params.id },
     });
     if (!deletedBlog) {
