@@ -1,0 +1,141 @@
+/* homepage.css */
+
+body {
+  background-color: #f8f9fa;
+  font-family: 'Arial', sans-serif;
+}
+
+.jumbotron {
+  background-image: url('/images/book1.jpg');
+  background-size: cover;
+  color: white;
+  padding: 100px 25px;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+}
+
+.jumbotron h1 {
+  font-size: 4rem;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.book-card {
+  width: 22rem;
+  margin-bottom: 30px;
+  transition: transform 0.3s ease;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.book-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.book-card img {
+  border-radius: 15px 15px 0 0;
+  max-height: 350px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.card-body {
+  padding: 20px;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #495057;
+}
+
+.card-text {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.btn-primary {
+  background-color: #ff6b6b;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #e63946;
+}
+
+.book-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #007BFF;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.featured-author {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.featured-author img {
+  border-radius: 50%;
+  height: 150px;
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.featured-author h3 {
+  font-size: 1.8rem;
+  color: #e63946;
+}
+
+.featured-author p {
+  color: #6c757d;
+}
+
+.callout-section {
+  background-color: #f1f1f1;
+  padding: 40px 0;
+}
+
+.callout-section h2 {
+  color: #495057;
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.glow-box {
+  border: 2px solid #00ff99;
+  box-shadow: 0 0 15px #00ff99;
+  transition: all 0.3s ease-in-out;
+}
+
+.glow-box:hover {
+  box-shadow: 0 0 30px #00ff99;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.book-card {
+  margin-bottom: 40px;
+}
+
+.carousel-item {
+  padding: 20px;
+}
+
+.carousel-inner .row {
+  display: flex;
+  justify-content: space-between;
+}

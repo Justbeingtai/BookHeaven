@@ -3,7 +3,7 @@ const axios = require('axios');
 require('dotenv').config(); // Load .env variables
 
 // Route for searching books via Google Books API
-router.get('/search', async (req, res) => {
+router.get('/', async (req, res) => { // Change '/search' to '/'
   try {
     const query = req.query.query; // The search term from the form
 
@@ -17,7 +17,7 @@ router.get('/search', async (req, res) => {
     });
 
     // Extract books from the Google Books API response
-    const googleBooks = googleBooksResponse.data.items;
+    const googleBooks = googleBooksResponse.data.items || [];
 
     const logged_in = req.session ? req.session.logged_in : false;
 
@@ -32,5 +32,6 @@ router.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Error fetching search results' });
   }
 });
+
 
 module.exports = router;

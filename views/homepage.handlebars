@@ -4,99 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to Book Heaven</title>
+  
   <!-- Bootstrap 5.3.3 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-  <!-- Add custom CSS for glowing effect -->
-  <style>
-    .glow-box {
-      border: 2px solid #00ff99;
-      box-shadow: 0 0 15px #00ff99;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .glow-box:hover {
-      box-shadow: 0 0 30px #00ff99;
-    }
-
-    .book-container {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 30px;
-    }
-
-    .book-card {
-      width: 30%;
-      padding: 20px;
-      text-align: center;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      overflow-y: auto; /* Enable scroll for long content */
-      max-height: 300px;
-    }
-
-    .book-card img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .review-section {
-      margin-top: 20px;
-    }
-
-    .review-card {
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin-bottom: 10px;
-    }
-  </style>
+  
+  <!-- Link to your new homepage.css -->
+  <link rel="stylesheet" href="/css/homepage.css">
 </head>
 
 <body>
+  <!-- Jumbotron section -->
+  <div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to Book Heaven</h1>
+    <p class="lead">Discover new books, connect with readers, and join the conversation!</p>
+    {{#if logged_in}}
+      <p class="lead">You are logged in as <strong>{{name}}</strong>.</p>
+    {{else}}
+      <a href="/signup" class="btn btn-primary btn-lg">Join Now</a>
+    {{/if}}
+  </div>
+
+<!-- Featured Section: Trending Books Carousel -->
+<div class="container mt-5">
+  <div class="text-center mb-4">
+    <h2>Trending Books</h2>
+    <p>Check out the latest and most popular books of the season!</p>
+  </div>
+
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner" id="trending-books-container">
+      <!-- Books will be dynamically loaded here -->
+    </div>
+    <button id="prev-book-btn" class="carousel-control-prev" type="button">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button id="next-book-btn" class="carousel-control-next" type="button">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+
+  <!-- Callout Section: Featured Author or Book Club -->
+  <div class="callout-section text-center">
+    <div class="container">
+      <h2>Join Our Book Club</h2>
+      <p>Connect with fellow book lovers, attend events, and discuss your favorite books!</p>
+      <a href="/book-club" class="btn btn-primary btn-lg">Join Now</a>
+    </div>
+  </div>
+
+  <!-- Featured Author Section -->
+  <div class="container featured-author mt-5 mb-5">
+    <img src="/images/jkrow.jpg" alt="Featured Author" class="rounded-circle">
+    <h3>Author of the Month: J.K. Rowling</h3>
+    <p>Discover the magical world of Harry Potter and explore J.K. Rowling's journey as an author!</p>
+    <a href="/author/jk-rowling" class="btn btn-outline-info">Learn More</a>
+  </div>
+
+  <!-- Book Reviews Section -->
   <div class="container mt-5">
-    <div class="jumbotron text-center">
-      <h1 class="display-4">Welcome to Book Heaven</h1>
-      <p class="lead">Discover new books, connect with readers, and join the conversation!</p>
-      {{#if logged_in}}
-        <p class="lead">You are logged in as <strong>{{name}}</strong>.</p>
-      {{/if}}
-    </div>
-    
-    <!-- Top Books Section -->
-    <div class="text-center mt-4">
-      <h2>Top Books Right Now</h2>
-      <p>Here are some of the most popular books currently available:</p>
-    </div>
-
-    <!-- Top Books with Glowing Boxes -->
-    <div class="book-container">
-      {{#each googleBooks}}
-      <div class="book-card glow-box">
-        <img src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="{{this.volumeInfo.title}} cover">
-        <h5>{{this.volumeInfo.title}}</h5>
-        <p><strong>Author:</strong> {{this.volumeInfo.authors}}</p>
-        <p>{{this.volumeInfo.description}}</p>
-
-        <!-- Display reviews for each book -->
-        <div class="review-section">
-          <h6>Reviews:</h6>
-          {{#each ../reviewsForBooks.[this.volumeInfo.title]}}
-          <div class="review-card">
+    <h2 class="text-center">Top Reviews from Readers</h2>
+    <div class="row mt-4">
+      {{#each reviewsForBooks}}
+        <div class="col-md-4">
+          <div class="review-card glow-box">
+            <h5 class="review-title">Review for {{this.bookTitle}}</h5>
             <p>{{this.comment}}</p>
-            <small><strong>Reviewed by:</strong> {{this.user.name}}</small>
+            <p><strong>Reviewed by:</strong> {{this.user.name}}</p>
           </div>
-          {{else}}
-          <p>No reviews found for this book.</p>
-          {{/each}}
         </div>
-      </div>
       {{/each}}
     </div>
   </div>
 
-  <!-- Bootstrap JS and dependencies -->
-  {{!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script> --}}
-  {{!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> --}}
+  <!-- Footer -->
+  <footer class="mt-5 text-center">
+    <p>&copy; 2024 The Book Heaven. Created by Tai, John, Nancy, Bitsiet, and Stacy.</p>
+  </footer>
+
+  <script src="/js/homepage.js"></script>
 </body>
 </html>

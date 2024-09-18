@@ -1,3 +1,4 @@
+// public/js/login.js
 const loginFormHandler = async (event) => {
   event.preventDefault();
 
@@ -5,17 +6,25 @@ const loginFormHandler = async (event) => {
   const password = document.querySelector('#password').value.trim();
 
   if (email && password) {
-    const response = await fetch('/api/users/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-      headers: { 'Content-Type': 'application/json' },
-    });
+    try {
+      const response = await fetch('/api/users/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-    if (response.ok) {
-      document.location.replace('/profile'); // Redirect to the profile page after successful login
-    } else {
-      alert('Failed to log in. Please check your credentials and try again.');
+      if (response.ok) {
+        // Redirect to the profile page after successful login
+        document.location.replace('/profile');
+      } else {
+        alert('Failed to log in. Please check your credentials.');
+      }
+    } catch (err) {
+      console.error('Error during login:', err);
+      alert('An error occurred during login.');
     }
+  } else {
+    alert('Please fill out both the email and password fields.');
   }
 };
 

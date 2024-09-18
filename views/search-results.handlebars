@@ -8,7 +8,11 @@
         <div class="col-md-4 mb-4">
           <div class="card h-100">
             <!-- Book Cover -->
-            <img class="card-img-top" src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="{{this.volumeInfo.title}} cover">
+            {{#if this.volumeInfo.imageLinks.thumbnail}}
+              <img class="card-img-top" src="{{this.volumeInfo.imageLinks.thumbnail}}" alt="{{this.volumeInfo.title}} cover">
+            {{else}}
+              <img class="card-img-top" src="/path/to/placeholder/image.jpg" alt="No cover available">
+            {{/if}}
 
             <!-- Book Details -->
             <div class="card-body">
@@ -17,7 +21,12 @@
                 <strong>Author(s):</strong> {{this.volumeInfo.authors}} <br>
                 <strong>Publisher:</strong> {{this.volumeInfo.publisher}} <br>
                 <strong>Published Date:</strong> {{this.volumeInfo.publishedDate}} <br>
-                <strong>Description:</strong> {{this.volumeInfo.description}}
+                <strong>Description:</strong> 
+                {{#if this.volumeInfo.description}}
+                  {{this.volumeInfo.description}}
+                {{else}}
+                  No description available.
+                {{/if}}
               </p>
             </div>
 
