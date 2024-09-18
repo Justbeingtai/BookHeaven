@@ -1,4 +1,4 @@
-let name = 'Anonymous'; // Default name
+let name = document.querySelector('#username').value || 'Anonymous'; // Fetch the username from the hidden input or set to Anonymous
 const socket = io({
   auth: { name }, // Send the name in the auth payload
 });
@@ -8,9 +8,12 @@ const chatForm = document.querySelector('#chat-form');
 const chatInput = document.querySelector('#message');
 const chatBox = document.querySelector('#message-box');
 const colorPicker = document.querySelector('#color-picker');
-const nameInput = document.querySelector('#name-input');
-const changeNameButton = document.querySelector('#change-name');
-const currentNameDisplay = document.querySelector('#current-name');
+const currentNameDisplay = document.querySelector('#current-name-display');
+
+// Display the current user's name
+if (currentNameDisplay) {
+  currentNameDisplay.innerText = `You are chatting as: ${name}`;
+}
 
 // Handle message submission
 chatForm.addEventListener('submit', (e) => {

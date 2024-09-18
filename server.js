@@ -69,8 +69,7 @@ sequelize.sync({ force: false }).then(() => {
 
 // Socket.io logic for real-time chat
 io.on('connection', (socket) => {
-  const { name } = socket.handshake.auth || { name: 'Anonymous' }; // Default to 'Anonymous' if no name provided
-  console.log(`New connection from: ${name}`);
+  let currentName = socket.handshake.auth.name || 'Anonymous'; // Default to 'Anonymous'
 
   // Listen for chat messages
   socket.on('chatMessage', (data) => {
@@ -78,11 +77,17 @@ io.on('connection', (socket) => {
     const time = new Date().toLocaleTimeString(); // Add timestamp for messages
 
     // Broadcast the message to everyone
-    io.emit('message', { name, message, color, time });
+    io.emit('message', { name: currentName, message, color, time });
+  });
+
+  // Handle name change
+  socket.on('nameChange', (newName) => {
+    currentName = newName;
+    socket.emit('nameChangeConfirmation', newName);
   });
 
   // Notify when a user disconnects
   socket.on('disconnect', () => {
-    io.emit('message', { name: 'System', message: `${name} has left the chat.`, color: '#FF0000' });
+    io.emit('message', { name: 'System', message: `${currentName} has left the chat.`, color: '#FF0000' });
   });
 });

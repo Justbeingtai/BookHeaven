@@ -13,6 +13,11 @@
 <body>
   <h1 class="text-center mb-4">Welcome to the Book Lovers' Chat Room</h1>
 
+  <!-- Display the current username -->
+  <div class="text-center">
+    <p id="current-name-display">You are chatting as: <strong>{{user_name}}</strong></p>
+  </div>
+
   <!-- Hidden element to store username -->
   <input type="hidden" id="username" value="{{user_name}}">
 
@@ -54,7 +59,7 @@
 
   <!-- Footer -->
   <footer class="text-center mt-4">
-    <p>&copy; 2024 The Book Heaven. All rights reserved.</p>
+    <p>&copy; 2024 The Book Heaven. Created by Tai, John, Nancy, Bitsiet, and Stacy.</p>
   </footer>
 
   <!-- jQuery and Socket.io -->
