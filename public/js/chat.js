@@ -1,6 +1,6 @@
-const username = document.querySelector('#username')?.textContent || 'Anonymous'; // Fetch the username or default to 'Anonymous'
+let name = 'Anonymous'; // Default name
 const socket = io({
-  auth: { username }, // Send the username in the auth payload
+  auth: { name }, // Send the name in the auth payload
 });
 
 // Grab DOM elements
@@ -8,6 +8,9 @@ const chatForm = document.querySelector('#chat-form');
 const chatInput = document.querySelector('#message');
 const chatBox = document.querySelector('#message-box');
 const colorPicker = document.querySelector('#color-picker');
+const nameInput = document.querySelector('#name-input');
+const changeNameButton = document.querySelector('#change-name');
+const currentNameDisplay = document.querySelector('#current-name');
 
 // Handle message submission
 chatForm.addEventListener('submit', (e) => {
@@ -17,9 +20,8 @@ chatForm.addEventListener('submit', (e) => {
   const color = colorPicker.value;
 
   if (message) {
-    console.log(`Sending message: ${message} with color ${color}`); // Log the message being sent
     // Send the message and color to the server
-    socket.emit('chatMessage', { message, color });
+    socket.emit('chatMessage', { message, color, name });
 
     // Clear the input field after sending
     chatInput.value = '';
@@ -29,11 +31,10 @@ chatForm.addEventListener('submit', (e) => {
 
 // Listen for messages from the server
 socket.on('message', (data) => {
-  console.log(`Message from server: ${data.username}: ${data.message}`); // Log received messages
   const newMessage = document.createElement('div');
   newMessage.classList.add('message');
   newMessage.style.color = data.color; // Set the message color
-  newMessage.innerHTML = `<strong>${data.username}:</strong> ${data.message}`;
+  newMessage.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
   chatBox.appendChild(newMessage);
   chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
 });

@@ -1,33 +1,61 @@
 const router = require('express').Router();
 const axios = require('axios');
-require('dotenv').config();
 
-// Route to fetch popular books for a genre
-router.get('/genres', async (req, res) => {
-  const genre = req.query.genre;
+// Number of books per page
+const BOOKS_PER_PAGE = 10;
+
+router.get('/:genre', async (req, res) => {
+  const genre = req.params.genre;
+  const page = parseInt(req.query.page) || 1; // Get the page number from the query, default to 1
 
   try {
-    // Fetch books based on genre from Google Books API
-    const googleBooksResponse = await axios.get('https://www.googleapis.com/books/v1/volumes', {
+    // Fetch books from Google Books API based on the genre
+    const startIndex = (page - 1) * BOOKS_PER_PAGE; // Calculate the starting index for pagination
+
+    const response = await axios.get(`https://www.googleapis.com/books/v1/volumes`, {
       params: {
-        q: `subject:${genre}`, // Fetch books by genre
-        key: process.env.GOOGLE_BOOKS_API_KEY,
-        maxResults: 10 // Limit the number of results
+        q: `subject:${genre}`,
+        startIndex: startIndex,
+        maxResults: BOOKS_PER_PAGE,
+        key: process.env.GOOGLE_BOOKS_API_KEY
       }
     });
 
-    const books = googleBooksResponse.data.items;
-    const logged_in = req.session ? req.session.logged_in : false;
+    // Check if the response contains valid data
+    if (!response.data || !response.data.items) {
+      throw new Error('No books found for this genre');
+    }
 
-    // Render the genre page with the books
+    const totalItems = response.data.totalItems; // Total number of books available
+    const totalPages = Math.ceil(totalItems / BOOKS_PER_PAGE); // Calculate total pages
+
+    // Map the book data
+    const books = response.data.items.map(book => ({
+      title: book.volumeInfo.title,
+      authors: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Unknown Author',
+      publishedDate: book.volumeInfo.publishedDate || 'Unknown Date',
+      image: book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : '/images/default-book.png',
+      infoLink: book.volumeInfo.infoLink,
+    }));
+
+    // Pagination logic
+    const hasPrevPage = page > 1;
+    const hasNextPage = page < totalPages;
+
     res.render('genre-page', {
       books,
       genre,
-      logged_in
+      page,
+      totalPages,
+      hasPrevPage,
+      hasNextPage,
+      prevPage: page - 1,
+      nextPage: page + 1,
+      logged_in: req.session.logged_in
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error fetching books for the genre' });
+    console.error(`Error fetching books: ${err.message}`);
+    res.status(500).json({ message: 'Error fetching books' });
   }
 });
 
