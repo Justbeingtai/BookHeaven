@@ -3,70 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat Room - Book Heaven</title>
+  <title>Chat Room</title>
+
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Chat CSS -->
   <link rel="stylesheet" href="/css/chat.css">
-  <style>
-    .chat-container {
-      display: flex;
-      flex-direction: column;
-      height: 80vh;
-      justify-content: space-between;
-      border: 1px solid #ddd;
-      padding: 20px;
-    }
-
-    .message-box {
-      flex-grow: 1;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .message {
-      margin-bottom: 10px;
-      padding: 8px;
-      background-color: #f1f1f1;
-      border-radius: 8px;
-    }
-
-    .chat-input {
-      display: flex;
-      align-items: center;
-    }
-
-    .chat-input input {
-      flex-grow: 1;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px 0 0 8px;
-    }
-
-    .chat-input button {
-      padding: 10px;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .color-picker {
-      margin-left: 10px;
-    }
-  </style>
 </head>
 <body>
-  <div class="container mt-5">
-    <h1 class="text-center">Welcome to the Chat Room</h1>
-    <div class="chat-container">
-      <div class="message-box" id="message-box"></div>
-      <form class="chat-input" id="chat-form">
-        <input type="text" id="message" placeholder="Type a message..." autocomplete="off" required>
-        <input type="color" id="color-picker" class="color-picker" value="#000000">
-        <button type="submit" class="btn btn-primary">Send</button>
-      </form>
+  <h1 class="text-center mb-4">Welcome to the Book Lovers' Chat Room</h1>
+
+  <!-- Display the current username -->
+  <div class="text-center">
+    <p id="current-name-display">You are chatting as: <strong>{{user_name}}</strong></p>
+  </div>
+
+  <!-- Hidden element to store username -->
+  <input type="hidden" id="username" value="{{user_name}}">
+
+  <div class="chat-container d-flex">
+    <!-- Chat Box -->
+    <div id="message-box" class="flex-grow-1 me-3">
+      <!-- Messages will be dynamically inserted here -->
+      {{#each messages}}
+      <div class="message">
+        <strong class="username">{{this.username}}</strong>: {{this.message}}
+        <small class="time">{{this.time}}</small>
+      </div>
+      {{/each}}
+    </div>
+
+    <!-- Book Suggestions Sidebar -->
+    <div class="suggestion-box">
+      <h4>Book Suggestions</h4>
+      {{#each bookSuggestions}}
+      <div class="book-suggestion d-flex align-items-center mb-3">
+        <img src="{{this.image}}" alt="{{this.title}} cover" class="book-image me-2">
+        <div>
+          <p class="book-title mb-0">{{this.title}}</p>
+          <p class="book-author">by {{this.author}}</p>
+        </div>
+      </div>
+      {{/each}}
     </div>
   </div>
 
-  <!-- Include Socket.io client script -->
+  <!-- Chat Input Section -->
+  <div class="chat-input-container mt-3">
+    <form id="chat-form" class="d-flex">
+      <input type="text" id="message" class="form-control me-2" placeholder="Type your message...">
+      <input type="color" id="color-picker" class="form-control color-picker me-2" value="#007BFF">
+      <button id="send-message" class="btn btn-primary">Send</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center mt-4">
+    <p>&copy; 2024 The Book Heaven. Created by Tai, John, Nancy, Bitsiet, and Stacy.</p>
+  </footer>
+
+  <!-- jQuery and Socket.io -->
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/chat.js"></script>
 </body>

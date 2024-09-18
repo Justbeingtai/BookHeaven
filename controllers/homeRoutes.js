@@ -6,7 +6,6 @@ require('dotenv').config(); // Load .env variables
 
 // Homepage route to display top 3 books and their reviews
 router.get('/', async (req, res) => {
-  
   try {
     // Fetch top 3 books from Google Books API (e.g., trending books)
     const googleBooksResponse = await axios.get('https://www.googleapis.com/books/v1/volumes', {
@@ -16,6 +15,7 @@ router.get('/', async (req, res) => {
         maxResults: 3 // Limit to top 3
       }
     });
+    console.log(googleBooksResponse.data);
 
     const googleBooks = googleBooksResponse.data.items;
 
@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
         },
         include: {
           model: User,
-          attributes: ['name']
+          attributes: ['name'] // Use 'name' instead of 'username'
         }
       });
 
@@ -52,6 +52,37 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: 'Error fetching top books and reviews' });
   }
 });
+
+// Route to fetch trending books with pagination
+router.get('/trending-books', async (req, res) => {
+  const page = parseInt(req.query.page) || 0; // Get the page number from query params, default is 0
+  const limit = 3; // Number of books per page
+  const startIndex = page * limit; // Calculate the start index
+
+  try {
+    // Fetch the books from Google Books API based on page number
+    const googleBooksResponse = await axios.get('https://www.googleapis.com/books/v1/volumes', {
+      params: {
+        q: 'top', // Fetch trending books
+        key: process.env.GOOGLE_BOOKS_API_KEY,
+        startIndex,
+        maxResults: limit,
+      }
+    });
+
+    const googleBooks = googleBooksResponse.data.items || [];
+    
+    console.log('Fetched books:', googleBooks);  // Log the fetched books to the console
+
+    // Respond with the new batch of books
+    res.json({ googleBooks });
+  } catch (err) {
+    console.error('Error fetching more books:', err);
+    res.status(500).json({ error: 'Error fetching more books' });
+  }
+});
+
+
 
 // Add route for login page
 router.get('/login', (req, res) => {
