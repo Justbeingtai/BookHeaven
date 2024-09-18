@@ -1,108 +1,48 @@
-# Module 14 Mini-Project: Crowdfunding App
+Book Heaven
 
-In this mini-project, you will work with a group to build a full-stack crowdfunding app using Node.js, Express.js, Sequelize, Handlebars.js, and MVC architecture.
+Book Heaven is a comprehensive platform for book lovers, providing a suite of features to enhance the book discovery and reading experience. Our platform allows users to search for books, write and read reviews, and engage in live chat with other bibliophiles. Leveraging technologies like Socket.IO for real-time communication, Bootstrap for a sleek UI, and Axios for seamless integration with the Google Books API, Book Heaven aims to create an immersive and interactive environment for book enthusiasts.
 
-## User Stories
+## Features
 
-* As a user, I want to see a list of current projects seeking funding.
+- Advanced Book Search : Quickly find books by title, author, ISBN, or genre using the Google Books API. Our search functionality is designed to help you discover both popular and obscure titles.
 
-* As a user, I want to be able to create an account.
+- In-Depth Book Reviews : Browse and contribute to reviews for thousands of books. Share your opinions and read what others have to say to make informed reading choices.
 
-* As a registered user, I want to post my own projects to ask for funding.
+- Real-Time Chat : Connect with fellow readers in real-time through our live chat feature, powered by Socket.IO. Discuss books, share recommendations, and build a community of like-minded book lovers.
 
-### Acceptance Criteria
+- Responsive Design : Enjoy a seamless browsing experience on any device with our responsive design built using Bootstrap. The platform is optimized for both desktop and mobile use.
 
-* It's done when the `/` homepage route renders a list of all projects from the database.
+- Personalized Recommendations : Get book recommendations based on your reading history and preferences.
 
-* It's done when the `/project/:id` route renders an individual project's details based on the route parameter id.
+## Technologies Used
 
-* It's done when the `/login` route renders a form to log in and a form to create a new account.
+- Socket.IO : Provides real-time, bidirectional, and event-based communication for live chat and notifications.
 
-* It's done when an existing user can enter their credentials on the login page to create a session on the server.
+- Bootstrap : Ensures a responsive, mobile-first design with its extensive set of CSS and JavaScript components.
 
-* It's done when a new user can create an account on the login page and then be immediately logged in with a session.
+- Axios : Simplifies HTTP requests to the Google Books API for fetching book data, making the integration process smooth and efficient.
 
-* It's done when the `/profile` route renders the logged-in user's projects and a form to create a new project.
 
-* It's done when only a logged in user can visit the `/profile` route.
+- Node.js : Serves as the runtime environment for our server-side code, handling requests and real-time communication.
 
-* It's done when a logged in user is redirected to `/profile` when they try to visit `/login` again.
+- Express.js : A minimal and flexible Node.js web application framework that provides robust features for building web applications and APIs.
 
-* It's done when a user on the profile page can use the form to create a new project in the database.
+## Usage
 
-* It's done when a user on the profile page can select a "Delete" button to remove their project from the database.
+Once the application is up and running, you can:
 
-* It's done when a logged-in user can select a "Logout" button to remove their session.
+- Search for Books : Use the search functionality to find books by various criteria. Input a book title, author, or ISBN in the search bar to get results from the Google Books API.
 
-* It's done when the session for a logged-in user expires after a set time.
+- Review Books : Navigate to a books detailed page to write a review. You can also read reviews submitted by other users to gain insights into the book's content and quality.
 
-* It's done when the API routes to create and delete posts are protected from non logged-in users.
+-  Participate in Live Chat :  Access the chat feature from any page to start or join conversations with other users. Share your thoughts, ask for recommendations, and engage with the community.
 
-* It's done when the code is organized using MVC architecture.
+- Browse Recommendations : Check out personalized book recommendations based on your reading history and preferences.
 
-* It's done when the views are rendered with Handlebars.js templates.
+## License
 
-## Specifications
+Book Heaven is licensed under the [MIT License]
 
-* The database models have the following fields and associations:
+## Contact
 
-  * `User`
-
-    * `id`: primary key
-
-    * `name`
-
-    * `email`
-
-    * `password`
-
-  * `Project`
-
-    * `id`: primary key
-
-    * `name`
-
-    * `description`
-
-    * `date_created`
-
-    * `needed_funding`
-
-    * `user_id`: foreign key that references `User.id`
-
-  * Users have many projects, and projects belong to a user.
-
-    * If a user is deleted, all associated projects are also deleted.
-
----
-
-## Getting Started
-
-The following should be created for the Mini-Project:
-
-* Be sure to change the `.env.EXAMPLE` file to just `.env` and update the credentials correctly. 
-
-* Create a `Views` folder to setup the folder structure to follow the MVC paradigm.
-
-* Be sure to review over the [Express Handlebars](https://www.npmjs.com/package/express-handlebars) if you need a refresher on how to set up Handlebars for your `Views` folder. 
-
-* Consider the task based on the Acceptance Criteria. Which folder should you work to see data returning from an API call?
-
-## 💡 Hints
-
-* What tools can you use to test the existing API routes if you don't yet have a front end?
-
-* Where would you place the client-side JavaScript for capturing form data?
-
-* How can middleware help protect routes from non logged-in users?
-
-* How can Handlebars.js helpers (both built-in and custom) be used to render the desired results?
-
-## 🏆 Bonus
-
-If you have completed this activity, work through the following challenge with your partner to further your knowledge:
-
-* Add an `/edit/:id` route for logged in users to update their projects' details. Then deploy the app to Render!
-
----
-© 2024 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+For questions, feedback, or support, please contact us at [contact@bookheaven.com]
